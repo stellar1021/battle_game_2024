@@ -28,8 +28,8 @@ void BalloonBullet::Render() {
 void BalloonBullet::Update() {
   // 更新位置，模拟弯曲前进
   
-  float wave_frequency = 50.0f;  // 波浪频率
-  float wave_amplitude = 0.5f;  // 波浪振幅
+  float wave_frequency = 30.0f;  // 波浪频率
+  float wave_amplitude = 0.8f;  // 波浪振幅
 
   // 使用正弦函数来调整速度，使其摆动
   float wave_offset = wave_amplitude * std::sin(wave_frequency * time_alive_);
