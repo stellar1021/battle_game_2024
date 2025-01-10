@@ -1,4 +1,4 @@
-#include "tiny_tank.h"
+#include "stellar1021_tank.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
@@ -11,7 +11,7 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
+stellar1021_tank::stellar1021_tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -19,13 +19,13 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
           {
-              {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-1.6f, 1.6f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
+              {{-1.6f, -2.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
+              {{1.6f, 1.6f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
+              {{1.6f, -2.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
               // distinguish front and back
-              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{1.2f, 2.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.5f}},
+              {{-1.2f, 2.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.5f}},
           },
           {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
     }
@@ -41,7 +41,7 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
         theta *= glm::pi<float>() * 2.0f;
         auto sin_theta = std::sin(theta);
         auto cos_theta = std::cos(theta);
-        turret_vertices.push_back({{sin_theta * 0.5f, cos_theta * 0.5f},
+        turret_vertices.push_back({{sin_theta * 1.0f, cos_theta * 1.0f},
                                    {0.0f, 0.0f},
                                    {0.7f, 0.7f, 0.7f, 1.0f}});
         turret_indices.push_back(i);
@@ -49,15 +49,15 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
         turret_indices.push_back(precision);
       }
       turret_vertices.push_back(
-          {{0.0f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{0.0f, 0.0f}, {0.3f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
       turret_vertices.push_back(
-          {{-0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{-0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
       turret_vertices.push_back(
-          {{0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
       turret_vertices.push_back(
-          {{-0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{-0.2f, 2.4f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
       turret_vertices.push_back(
-          {{0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{0.2f, 2.4f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
       turret_indices.push_back(precision + 1 + 0);
       turret_indices.push_back(precision + 1 + 1);
       turret_indices.push_back(precision + 1 + 2);
@@ -70,7 +70,7 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void Tank::Render() {
+void stellar1021_tank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -79,13 +79,13 @@ void Tank::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void Tank::Update() {
+void stellar1021_tank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 
-void Tank::TankMove(float move_speed, float rotate_angular_speed) {
+void stellar1021_tank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -117,7 +117,7 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void Tank::TurretRotate() {
+void stellar1021_tank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -130,7 +130,7 @@ void Tank::TurretRotate() {
   }
 }
 
-void Tank::Fire() {
+void stellar1021_tank::Fire() {
   if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -138,7 +138,7 @@ void Tank::Fire() {
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         GenerateBullet<bullet::CannonBall>(
-            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+            position_ + Rotate({0.0f, 2.4f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
@@ -149,18 +149,18 @@ void Tank::Fire() {
   }
 }
 
-bool Tank::IsHit(glm::vec2 position) const {
+bool stellar1021_tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
+  return position.x > -1.6f && position.x < 1.6f && position.y > -2.0f &&
+         position.y < 2.0f && position.x + position.y < 3.2f &&
+         position.y - position.x < 3.2f;
 }
 
-const char *Tank::UnitName() const {
-  return "Tiny Tank";
+const char *stellar1021_tank::UnitName() const {
+  return "stellar1021 tank";
 }
 
-const char *Tank::Author() const {
-  return "LazyJazz";
+const char *stellar1021_tank::Author() const {
+  return "stellar1021";
 }
 }  // namespace battle_game::unit
