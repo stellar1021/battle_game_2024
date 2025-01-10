@@ -19,13 +19,13 @@ stellar1021_tank::stellar1021_tank(GameCore *game_core, uint32_t id, uint32_t pl
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
           {
-              {{-1.6f, 1.6f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
-              {{-1.6f, -2.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
-              {{1.6f, 1.6f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
-              {{1.6f, -2.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 0.5f}},
+              {{-1.6f, 1.6f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+              {{-1.6f, -2.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+              {{1.6f, 1.6f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+              {{1.6f, -2.0f}, {0.5f, 0.5f}, {0.0f, 0.0f, 1.0f, 1.0f}},
               // distinguish front and back
-              {{1.2f, 2.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.5f}},
-              {{-1.2f, 2.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.5f}},
+              {{1.2f, 2.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+              {{-1.2f, 2.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
           },
           {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
     }
@@ -49,15 +49,15 @@ stellar1021_tank::stellar1021_tank(GameCore *game_core, uint32_t id, uint32_t pl
         turret_indices.push_back(precision);
       }
       turret_vertices.push_back(
-          {{0.0f, 0.0f}, {0.3f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
+          {{0.0f, 0.0f}, {0.3f, 0.0f}, {0.0f, 1.0f, 1.0f, 1.0f}});
       turret_vertices.push_back(
-          {{-0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
+          {{-0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f, 1.0f, 1.0f}});
       turret_vertices.push_back(
-          {{0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
+          {{0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f, 1.0f, 1.0f}});
       turret_vertices.push_back(
-          {{-0.2f, 2.4f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
+          {{-0.2f, 2.4f}, {0.0f, 0.0f}, {0.0f, 1.0f, 1.0f, 1.0f}});
       turret_vertices.push_back(
-          {{0.2f, 2.4f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.9f}});
+          {{0.2f, 2.4f}, {0.0f, 0.0f}, {0.0f, 1.0f, 1.0f, 1.0f}});
       turret_indices.push_back(precision + 1 + 0);
       turret_indices.push_back(precision + 1 + 1);
       turret_indices.push_back(precision + 1 + 2);
@@ -137,7 +137,7 @@ void stellar1021_tank::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::CannonBall>(
+        GenerateBullet<bullet::BalloonBullet>(
             position_ + Rotate({0.0f, 2.4f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
